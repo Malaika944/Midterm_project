@@ -1,57 +1,32 @@
-Midterm_project
-==============================
+# NoShowIQ
 
- A prediction API
+![CI/CD](https://github.com/Malaika944/Midterm_project/actions/workflows/ci-cd.yml/badge.svg)
 
-Project Organization
-------------
+A prediction API that tells a clinic which patients are likely to skip 
+their appointment so they can act on it.
 
-    ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
-    │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
-    │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
-    │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
+## Live URL
+Coming soon — will be updated after Hugging Face deployment.
 
+## How to run locally
 
---------
+```bash
+pip install -r requirements.txt
+python train.py
+uvicorn noshow_iq.api:app --reload
+```
 
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+## API Endpoints
+
+- `GET /health` — Check if API is running
+- `POST /predict` — Predict no-show risk for one patient  
+- `GET /history` — Last 20 predictions
+- `GET /stats` — Aggregated statistics
+
+## Dataset
+
+Kaggle Medical Appointment No-Shows dataset — 110,000+ records.
+
+## Tech Stack
+
+- FastAPI, MongoDB Atlas, Docker, GitHub Actions, Hugging Face Spaces
