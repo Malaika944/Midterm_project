@@ -1,4 +1,5 @@
 import joblib
+import pandas as pd
 from datetime import datetime
 from pathlib import Path
 
@@ -9,13 +10,24 @@ from sklearn.model_selection import train_test_split
 
 MODEL_PATH = Path("models") / "noshow_model.joblib"
 
+FEATURE_COLS = [
+    "age",
+    "days_in_advance",
+    "hour_of_booking",
+    "scholarship",
+    "hipertension",
+    "diabetes",
+    "alcoholism",
+    "handcap",
+    "sms_received",
+]
+
 
 def train(X, y, db=None):
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42, stratify=y
     )
 
-    # Fix the 80/20 class imbalance using SMOTE
     smote = SMOTE(random_state=42)
     X_train_res, y_train_res = smote.fit_resample(X_train, y_train)
 
@@ -60,6 +72,11 @@ def load_model():
 
 
 def predict(model, X):
+    if not isinstance(X, pd.DataFrame):
+        X = pd.DataFrame([X], columns=FEATURE_COLS)
+    else:
+        X = pd.DataFrame(X.values, columns=FEATURE_COLS)
+
     probability = float(model.predict_proba(X)[:, 1][0])
     risk_level = "high" if probability >= 0.5 else "low"
 

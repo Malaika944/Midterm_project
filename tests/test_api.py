@@ -1,20 +1,6 @@
 import pytest
-from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
-
-
-@pytest.fixture(scope="module")
-def client():
-    with patch("noshow_iq.api.MongoClient"), \
-         patch("noshow_iq.api.load_model") as mock_load:
-
-        mock = MagicMock()
-        mock.predict_proba.return_value = [[0.6, 0.4]]
-        mock_load.return_value = mock
-
-        from noshow_iq.api import app
-        with TestClient(app) as c:
-            yield c
+from fastapi.testclient import TestClient
 
 
 SAMPLE = {
@@ -28,6 +14,25 @@ SAMPLE = {
     "days_in_advance": 5,
     "hour_of_booking": 10,
 }
+
+
+@pytest.fixture(scope="module")
+def client():
+    mock_model = MagicMock()
+    mock_model.predict_proba.return_value = [[0.6, 0.4]]
+
+    with patch("noshow_iq.api.get_model", return_value=mock_model), \
+         patch("noshow_iq.api.get_db") as mock_db:
+
+        mock_col = MagicMock()
+        mock_col.insert_one = MagicMock()
+        mock_col.find.return_value.sort.return_value.limit.return_value = []
+        mock_col.aggregate.return_value = []
+        mock_db.return_value.__getitem__ = MagicMock(return_value=mock_col)
+
+        from noshow_iq.api import app
+        with TestClient(app) as c:
+            yield c
 
 
 def test_health_returns_200(client):
