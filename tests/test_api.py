@@ -59,4 +59,3 @@ def test_predict_risk_level_valid(client):
 
 def test_predict_has_recommendation(client):
     assert "recommendation" in client.post("/predict", json=SAMPLE).json()
-    
