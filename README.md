@@ -30,3 +30,8 @@ Kaggle Medical Appointment No-Shows dataset — 110,000+ records.
 ## Tech Stack
 
 - FastAPI, MongoDB Atlas, Docker, GitHub Actions, Hugging Face Spaces
+
+## Model Performance
+- Algorithm: Random Forest with SMOTE
+- Handles 80/20 class imbalance
+- Reports precision, recall, F1 for both classes
