@@ -1,7 +1,6 @@
-import sys
-import pytest
 import numpy as np
 from unittest.mock import MagicMock, patch
+from fastapi.testclient import TestClient
 
 
 SAMPLE = {
@@ -16,28 +15,21 @@ SAMPLE = {
     "hour_of_booking": 10,
 }
 
+mock_model = MagicMock()
+mock_model.predict_proba.return_value = np.array([[0.6, 0.4]])
 
-def setup_module(module):
-    mock_model = MagicMock()
-    mock_model.predict_proba.return_value = np.array([[0.6, 0.4]])
+mock_col = MagicMock()
+mock_col.insert_one = MagicMock()
+mock_col.find.return_value.sort.return_value.limit.return_value = []
+mock_col.aggregate.return_value = []
 
-    mock_col = MagicMock()
-    mock_col.insert_one = MagicMock()
-    mock_col.find.return_value.sort.return_value.limit.return_value = []
-    mock_col.aggregate.return_value = []
+mock_db = MagicMock()
+mock_db.__getitem__ = MagicMock(return_value=mock_col)
 
-    mock_db = MagicMock()
-    mock_db.__getitem__ = MagicMock(return_value=mock_col)
-
-    patch("noshow_iq.api.get_model", return_value=mock_model).start()
-    patch("noshow_iq.api.get_db", return_value=mock_db).start()
-    patch("noshow_iq.api.model", mock_model).start()
-
-
-setup_module(None)
-
-from fastapi.testclient import TestClient
-from noshow_iq.api import app
+with patch("noshow_iq.api.get_model", return_value=mock_model), \
+        patch("noshow_iq.api.get_db", return_value=mock_db), \
+        patch("noshow_iq.api.model", mock_model):
+    from noshow_iq.api import app
 
 client = TestClient(app)
 
