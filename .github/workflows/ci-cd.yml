@@ -18,7 +18,9 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install flake8 pytest httpx -r requirements.txt
+        run: |
+          pip install flake8 pytest httpx -r requirements.txt
+          pip install -e .
 
       - name: Step 1 - Lint with flake8
         run: flake8 noshow_iq/ tests/ --max-line-length=100
