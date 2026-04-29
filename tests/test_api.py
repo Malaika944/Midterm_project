@@ -60,4 +60,3 @@ def test_predict_risk_level_valid():
 def test_predict_has_recommendation():
     api_module.model = mock_model
     assert "recommendation" in client.post("/predict", json=SAMPLE).json()
-
