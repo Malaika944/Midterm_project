@@ -28,12 +28,7 @@ def get_model():
     return load_model()
 
 
-try:
-    model = get_model()
-    print("Model loaded successfully.")
-except FileNotFoundError as e:
-    model = None
-    print(f"WARNING: {e}")
+model = None
 
 
 class AppointmentInput(BaseModel):
