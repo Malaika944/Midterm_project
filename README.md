@@ -15,7 +15,8 @@ license: mit
 A prediction API that tells a clinic which patients are likely to skip their appointment.
 
 ## Live URL
-https://Malaika944-noshow-iq.hf.space
+https://malaika944-noshow-iq.hf.space/health
+
 
 ## API Endpoints
 - `GET /health` — Check if API is running
