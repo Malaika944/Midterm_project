@@ -1,4 +1,3 @@
-import numpy as np
 from fastapi.testclient import TestClient
 from noshow_iq.api import app
 
